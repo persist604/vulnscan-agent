@@ -1,0 +1,58 @@
+# VulnScan Agent 配置
+scan:
+  # 支持的语言
+  languages:
+    - python
+    - javascript
+    - typescript
+    - java
+    - c
+    - cpp
+    - go
+    - rust
+    - php
+    - ruby
+
+  # 扫描深度: quick | standard | deep
+  depth: standard
+
+  # 最大并发 Agent 数
+  max_agents: 4
+
+  # 忽略的目录
+  ignore_dirs:
+    - node_modules
+    - .git
+    - vendor
+    - __pycache__
+    - venv
+    - .venv
+    - dist
+    - build
+
+  # 忽略的文件模式
+  ignore_patterns:
+    - "*.min.js"
+    - "*.map"
+    - "*.lock"
+
+# AI 模型配置
+ai:
+  # provider: openai | anthropic | mimo
+  provider: openai
+  model: gpt-4o
+  api_key: ${OPENAI_API_KEY}
+  max_tokens: 4096
+  temperature: 0.1
+
+# 报告配置
+report:
+  format: markdown  # markdown | json | html
+  output_dir: ./reports
+  include_fix_suggestions: true
+  severity_levels:
+    - critical
+    - high
+    - medium
+    - low
+    - info

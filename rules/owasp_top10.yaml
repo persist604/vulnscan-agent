@@ -1,0 +1,89 @@
+# OWASP Top 10 2021 通用规则集
+rules:
+  # A01: Broken Access Control
+  - id: GEN-ACL-001
+    description: "硬编码的管理员凭证或后门"
+    pattern: "(?:admin|root|superuser)\\s*[:=]\\s*['\"][^'"]+['\"]"
+    severity: critical
+    cwe: CWE-798
+
+  # A02: Cryptographic Failures
+  - id: GEN-CRYPTO-001
+    description: "使用弱哈希算法 (MD5/SHA1)"
+    pattern: "(?:md5|sha1)\\s*\\(|hashlib\\.(?:md5|sha1)|MessageDigest\\.getInstance\\s*\\(\\s*['\"](?:MD5|SHA-1)"
+    severity: medium
+    cwe: CWE-327
+
+  - id: GEN-CRYPTO-002
+    description: "不安全的随机数生成"
+    pattern: "Math\\.random|random\\.random|rand\\(\\)|srand\\("
+    severity: medium
+    cwe: CWE-330
+
+  # A03: Injection
+  - id: GEN-INJ-001
+    description: "LDAP 注入"
+    pattern: "ldap.*(?:search|bind).*\\+|\\$\\{"
+    severity: high
+    cwe: CWE-90
+
+  - id: GEN-INJ-002
+    description: "XPath 注入"
+    pattern: "xpath.*(?:select|evaluate).*\\+"
+    severity: high
+    cwe: CWE-643
+
+  # A04: Insecure Design
+  - id: GEN-DESIGN-001
+    description: "缺少速率限制的登录/注册端点"
+    pattern: "(?:login|register|signup|signin).*rate.?limit"
+    severity: medium
+    cwe: CWE-799
+
+  # A05: Security Misconfiguration
+  - id: GEN-CONF-001
+    description: "CORS 配置允许所有来源"
+    pattern: "(?:Access-Control-Allow-Origin|cors).*\\*|allow.?origin.*\\*"
+    severity: high
+    cwe: CWE-942
+
+  - id: GEN-CONF-002
+    description: "调试模式开启"
+    pattern: "(?:DEBUG|debug)\\s*[:=]\\s*(?:true|True|1|on)|debug\\s*=\\s*true"
+    severity: medium
+    cwe: CWE-489
+
+  # A06: Vulnerable Components
+  - id: GEN-OUTDATED-001
+    description: "使用已知有漏洞的组件版本"
+    pattern: "(?:version|ver)\\s*[:=]\\s*['\"](?:0\\.|[12]\\.[0-9]\\.)"
+    severity: info
+    cwe: CWE-1104
+
+  # A07: Authentication Failures
+  - id: GEN-AUTH-001
+    description: "密码强度要求缺失"
+    pattern: "(?:password|passwd).*(?:min|length|minlength).*(?:[1-6]\\b)"
+    severity: medium
+    cwe: CWE-521
+
+  # A08: Data Integrity Failures
+  - id: GEN-INTEGRITY-001
+    description: "未验证的数据反序列化"
+    pattern: "(?:pickle\\.loads|yaml\\.load|unserialize|readObject)\\s*\\("
+    severity: critical
+    cwe: CWE-502
+
+  # A09: Logging Failures
+  - id: GEN-LOG-001
+    description: "日志中包含敏感信息"
+    pattern: "(?:log|logger|print|console)\\.(?:info|debug|warn|error).*password|(?:log|logger|print|console)\\.(?:info|debug|warn|error).*token"
+    severity: medium
+    cwe: CWE-532
+
+  # A10: SSRF
+  - id: GEN-SSRF-001
+    description: "服务端请求伪造"
+    pattern: "(?:fetch|request|urlopen|http\\.(?:get|post))\\s*\\(.*(?:user|input|param|req)"
+    severity: high
+    cwe: CWE-918
